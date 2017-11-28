@@ -11,22 +11,50 @@ public class MockSetup {
     public WireMockRule wireMockRule = new WireMockRule(8089); // No-args constructor defaults to port 8080
 
     @Test
-    public void exampleTest() {
-        stubFor(get(urlEqualTo("/my/resource"))
-                //.withHeader("Accept", equalTo("text/xml"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "text/xml")
-                        .withBody("<response>Some content</response>")));
+    public void mockPostitive() {
+        stubFor(get(anyUrl()). // urlEqualTo("/") / urlMatching("")
+                willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/plain") // "application/json"
+                .withBody("status: reply\n" +
+                        "content-type: text/plain\n" +
+                        "concat_type: SMPP_TRUNCATE\n" +
+                        "destination: 79773067305\n" +
+                        " \n" +
+                        "My msg")
+        ));
+        System.out.println("Started!");
         try {
-            Thread.sleep(10000);
+            Thread.sleep(20000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 
+    /*
+    public static void mock1() {
+        configureFor("localhost", 8082);
+        stubFor(get(anyUrl()). // urlEqualTo("/") / urlMatching("")
+                willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/plain") // "application/json"
+                .withBody("status: reply\n" +
+                        "content-type: text/plain\n" +
+                        "concat_type: SMPP_TRUNCATE\n" +
+                        "destination: 79775550017\n" +
+                        " \n" +
+                        "My Message Сообщение.")
+        ));
+    }
 
-
+    public static void mock2() {
+        configureFor("localhost", 8082);
+        stubFor(get(anyUrl()). // urlEqualTo("/") / urlMatching("")
+                willReturn(aResponse()
+                .withStatus(500)
+                .withHeader("Content-Type", "text/plain") // "application/json"
+                .withBody("Test the error")
+        ));
+    }
+    */
 }
